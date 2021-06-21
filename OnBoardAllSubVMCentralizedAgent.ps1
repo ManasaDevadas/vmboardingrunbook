@@ -33,6 +33,8 @@ param
     [Parameter(Mandatory=$false)] 
     [bool] $OnboardClassicVMs = $false,
     [Parameter(Mandatory=$true)] 
+    [String] $ResourceGrpName,
+    [Parameter(Mandatory=$true)] 
     [String] $workspaceId,
     [Parameter(Mandatory=$true)] 
     [bool] $RemoveExtentionBeforeReconfigureLinux = $true,
@@ -89,7 +91,7 @@ ForEach ($subId in $subIdList)
         $subIdSubNameList.Add($subInfo.SubscriptionId, $subInfo.Name)
     }
 
-    $VMs = Get-AzVM | Where { $_.StorageProfile.OSDisk.OSType -eq "Windows" -or  $_.StorageProfile.OSDisk.OSType -eq "Linux" }
+    $VMs = Get-AzVM -ResourceGroupName $ResourceGrpName| Where { $_.StorageProfile.OSDisk.OSType -eq "Windows" -or  $_.StorageProfile.OSDisk.OSType -eq "Linux" }
 
     # Start each of the VMs
     foreach ($VM in $VMs) 
